@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলাদেশ ক্রিকেট গ্যালারি | খেলোয়াড়দের জীবনী</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kalpurush', 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #e53935);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 15px;
+        }
+
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #e53935;
+            transform: translateY(-2px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            aspect-ratio: 16/9;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        .caption-title {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #ffcc00;
+        }
+
+        .caption-date {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* মডাল স্টাইল */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            object-fit: contain;
+            margin-top: 5vh;
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {transform: scale(0.9);}
+            to {transform: scale(1);}
+        }
+
+        .modal-info {
+            background: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .modal-title {
+            color: #1a237e;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e53935;
+            padding-bottom: 10px;
+        }
+
+        .player-bio {
+            color: #555;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #e53935;
+        }
+
+        .footer {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>বাংলাদেশ ক্রিকেট গ্যালারি</h1>
+        <p>ঐতিহাসিক মুহূর্ত</p>
+    </header>
+
+    <div class="container">
+        <div class="gallery-filter">
+            <button class="filter-btn active" data-filter="all">সবগুলো</button>
+            <button class="filter-btn" data-filter="1">ফাইনাল</button>
+            <button class="filter-btn" data-filter="2">দল</button>
+            <button class="filter-btn" data-filter="3">ম্যাচ</button>
+            <button class="filter-btn" data-filter="players">খেলোয়াড়</button>
+        </div>
+
+        <div class="gallery-grid">
+            <!-- শাকিব আল হাসান -->
+            <div class="gallery-item" data-category="players" 
+                 data-title="আশিকুর ইসলাম" 
+                 data-date="জন্ম: ২৪ মার্চ, ১৯৮৭"
+                 data-bio="আশিকুর ইসলাম 2025 সাল থেকে কাকিনা সুপার রীগ খেলায় অংশগ্রণ করে আসছে, সে ডান হাতি ব্যাচর্স মান, তার দুর্দান্ত খেলায় সে দর্শকে অকর্ষন করে।">
+                <img src="asiq.jpg" alt="আশিকুর ইসলাম" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">আশিকুর ইসলাম</h3>
+                    <p class="caption-date">বাংলাদেশের সেরা অলরাউন্ডার</p>
+                </div>
+            </div>
+
+            <!-- মাশরাফি মর্তুজা -->
+            <div class="gallery-item" data-category="players" 
+                 data-title="মাশরাফি বিন মর্তুজা" 
+                 data-date="জন্ম: ৫ অক্টোবর, ১৯৮৩"
+                 data-bio="মাশরাফি বিন মর্তুজা বাংলাদেশ ক্রিকেট দলের সাবেক অধিনায়ক এবং ফাস্ট বোলার। তিনি বাংলাদেশ ক্রিকেটের 'ন্যারো' নামে পরিচিত। ২০০১ সালে আন্তর্জাতিক ক্রিকেটে অভিষেক হয় তার। ২০১৫ বিশ্বকাপে বাংলাদেশের সাফল্যের নেতৃত্ব দিয়েছেন তিনি। আঘাতের কারণে ২০২০ সালে আন্তর্জাতিক ক্রিকেট থেকে অবসর নেন। মাশরাফি রাজনীতিতেও সক্রিয় এবং বর্তমানে সংসদ সদস্য।">
+                <video src="1.mp4" alt="মাশরাফি মর্তুজা" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">মাশরাফি মর্তুজা</h3>
+                    <p class="caption-date">জাতীয় দলের সাবেক অধিনায়ক</p>
+                </div>
+            </div>
+
+            <!-- মুশফিকুর রহিম -->
+            <div class="gallery-item" data-category="players" 
+                 data-title="মুশফিকুর রহিম" 
+                 data-date="জন্ম: ৯ মে, ১৯৮৭"
+                 data-bio="মুশফিকুর রহিম বাংলাদেশ ক্রিকেট দলের উইকেট-কিপার ব্যাটসম্যান। তিনি বাংলাদেশের সবচেয়ে সফল টেস্ট ব্যাটসম্যান এবং একমাত্র ক্রিকেটার যিনি টেস্ট ক্রিকেটে ডাবল সেঞ্চুরি করেছেন। ২০০৫ সালে আন্তর্জাতিক ক্রিকেটে অভিষেক হয় তার। মুশফিকুর বাংলাদেশ দলের হয়ে সবচেয়ে বেশি টেস্ট ক্যাচ নিয়েছেন। তিনি বাংলাদেশ ক্রিকেটের 'মিস্টার ডিপেন্ডেবল' নামে পরিচিত।">
+                <img src="https://via.placeholder.com/600x400?text=Mushfiqur+Rahim" alt="মুশফিকুর রহিম" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">মুশফিকুর রহিম</h3>
+                    <p class="caption-date">বাংলাদেশের সেরা উইকেট-কিপার ব্যাটসম্যান</p>
+                </div>
+            </div>
+
+            <!-- তামিম ইকবাল -->
+            <div class="gallery-item" data-category="players" 
+                 data-title="তামিম ইকবাল" 
+                 data-date="জন্ম: ২০ মার্চ, ১৯৮৯"
+                 data-bio="তামিম ইকবাল বাংলাদেশ ক্রিকেট দলের সাবেক ওপেনিং ব্যাটসম্যান। তিনি বাংলাদেশের হয়ে সবচেয়ে বেশি রান করেছেন ওডিআই ফরম্যাটে। ২০০৭ সালে আন্তর্জাতিক ক্রিকেটে অভিষেক হয় তার। তামিম ২০০৭ বিশ্বকাপে বাংলাদেশ দলের হয়ে গুরুত্বপূর্ণ ভূমিকা পালন করেন। তিনি বাংলাদেশের প্রথম ক্রিকেটার যিনি টেস্ট ক্রিকেটে ১০,০০০ রান করেছেন। ২০২২ সালে আন্তর্জাতিক ক্রিকেট থেকে অবসর নেন তিনি।">
+                <img src="https://via.placeholder.com/600x400?text=Tamim+Iqbal" alt="তামিম ইকবাল" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">তামিম ইকবাল</h3>
+                    <p class="caption-date">সেরা ওপেনিং ব্যাটসম্যান</p>
+                </div>
+            </div>
+
+            <!-- বিশ্বকাপ ২০১৫ -->
+            <div class="gallery-item" data-category="1" 
+                 data-title="বিশ্বকাপ ২০১৫: ইংল্যান্ডকে হারানো" 
+                 data-date="১৭ মার্চ, ২০১৫"
+                 data-bio="২০১৫ ক্রিকেট বিশ্বকাপে বাংলাদেশ ইংল্যান্ডকে ১৫ রানে হারিয়ে কোয়ার্টার ফাইনালে উত্তরণ করে। মাহমুদউল্লাহ রিয়াদের ১০৩ রানের ইনিংস এবং রুবেল হোসেনের ৪ উইকেট এই জয়ে মুখ্য ভূমিকা পালন করে। এটি বাংলাদেশ ক্রিকেট ইতিহাসের একটি গুরুত্বপূর্ণ মাইলফলক ছিল। মেলবোর্ন ক্রিকেট গ্রাউন্ডে অনুষ্ঠিত এই ম্যাচে বাংলাদেশ প্রথমবারের মতো বিশ্বকাপের কোয়ার্টার ফাইনালে পৌঁছায়।">
+                <img src="https://via.placeholder.com/600x400?text=BD+vs+ENG+2015" alt="বিশ্বকাপ ২০১৫" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">বিশ্বকাপ ২০১৫</h3>
+                    <p class="caption-date">ইংল্যান্ডকে হারিয়ে কোয়ার্টার ফাইনালে</p>
+                </div>
+            </div>
+
+            <!-- টেস্ট জয় অস্ট্রেলিয়ার বিপক্ষে -->
+            <div class="gallery-item" data-category="2" 
+                 data-title="অস্ট্রেলিয়ার বিপক্ষে প্রথম টেস্ট জয়" 
+                 data-date="১ সেপ্টেম্বর, ২০১৭"
+                 data-bio="২০১৭ সালে বাংলাদেশ অস্ট্রেলিয়াকে টেস্ট ম্যাচে প্রথমবারের মতো হারায়। মিরপুরে অনুষ্ঠিত এই ম্যাচে বাংলাদেশ ২০ রানে জয়লাভ করে। শাকিব আল হাসান ১০ উইকেট এবং মুশফিকুর রহিম ১৮১ রান করেন এই ম্যাচে। এটি বাংলাদেশ ক্রিকেটের অন্যতম সেরা অর্জন হিসেবে বিবেচিত হয়। বাংলাদেশের টেস্ট ক্রিকেট ইতিহাসে এটি একটি যুগান্তকারী ঘটনা ছিল।">
+                <img src="https://via.placeholder.com/600x400?text=BD+vs+AUS+2017" alt="অস্ট্রেলিয়ার বিপক্ষে টেস্ট জয়" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">অস্ট্রেলিয়ার বিপক্ষে টেস্ট জয়</h3>
+                    <p class="caption-date">২০১৭ সালে ঐতিহাসিক জয়</p>
+                </div>
+            </div>
+
+            <!-- টি-টোয়েন্টি বিশ্বকাপ ২০২১ -->
+            <div class="gallery-item" data-category="3" 
+                 data-title="টি-টোয়েন্টি বিশ্বকাপ ২০২১" 
+                 data-date="২ জুন, ২০২১"
+                 data-bio="২০২১ টি-টোয়েন্টি বিশ্বকাপে বাংলাদেশ দক্ষিণ আফ্রিকাকে হারিয়ে বড় একটি জয় পায়। মাহমুদউল্লাহ রিয়াদের দারুণ ইনিংস (৫০* রান) এবং নাসুম আহমেদের বোলিং (৩/২৬) এই জয়ে মুখ্য ভূমিকা পালন করে। এটি ছিল বাংলাদেশের জন্য একটি গুরুত্বপূর্ণ জয় যা তাদের সুপার ১২ পর্বে উত্তরণে সাহায্য করে। শারজায় অনুষ্ঠিত এই ম্যাচটি বাংলাদেশের টি-টোয়েন্টি ইতিহাসের অন্যতম সেরা ম্যাচ হিসেবে বিবেচিত হয়।">
+                <img src="https://via.placeholder.com/600x400?text=BD+vs+SA+2021" alt="টি-টোয়েন্টি বিশ্বকাপ ২০২১" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">টি-টোয়েন্টি বিশ্বকাপ ২০২১</h3>
+                    <p class="caption-date">দক্ষিণ আফ্রিকাকে হারানো</p>
+                </div>
+            </div>
+
+            <!-- এশিয়া কাপ ২০১৮ -->
+            <div class="gallery-item" data-category="3" 
+                 data-title="এশিয়া কাপ ২০১৮: ফাইনালে উত্তরণ" 
+                 data-date="২৮ সেপ্টেম্বর, ২০১৮"
+                 data-bio="২০১৮ এশিয়া কাপে বাংলাদেশ পাকিস্তানকে হারিয়ে ফাইনালে উত্তরণ করে। লিটন দাসের ৪৩ রান এবং মুস্তাফিজুর রহমানের ৪ উইকেট এই জয়ে মুখ্য ভূমিকা পালন করে। দুবাইয়ে অনুষ্ঠিত এই ম্যাচটি ছিল অত্যন্ত রোমাঞ্চকর যেখানে শেষ ওভারে বাংলাদেশ জয়ী হয়। যদিও ফাইনালে ভারতের কাছে হেরে যায় বাংলাদেশ, তবুও টুর্নামেন্টে তাদের পারফরম্যান্স ছিল প্রশংসনীয়।">
+                <img src="https://via.placeholder.com/600x400?text=BD+Asia+Cup+2018" alt="এশিয়া কাপ ২০১৮" class="gallery-img">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">এশিয়া কাপ ২০১৮</h3>
+                    <p class="caption-date">ফাইনালে উত্তরণ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- মডাল -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="expandedImg">
+        <div class="modal-info">
+            <h2 id="modalTitle"></h2>
+            <p id="modalDate" style="color: #e53935; margin-bottom: 15px;"></p>
+            <p id="modalBio" class="player-bio"></p>
+        </div>
+    </div>
+
+    <script>
+        // ফিল্টার বাটন ফাংশনালিটি
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('expandedImg');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDate = document.getElementById('modalDate');
+            const modalBio = document.getElementById('modalBio');
+            const closeBtn = document.querySelector('.close');
+
+            // ফিল্টার ফাংশন
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const filterValue = this.getAttribute('data-filter');
+
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // মডাল ফাংশন
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    const title = this.getAttribute('data-title');
+                    const date = this.getAttribute('data-date');
+                    const bio = this.getAttribute('data-bio');
+
+                    modalImg.src = imgSrc;
+                    modalTitle.textContent = title;
+                    modalDate.textContent = date;
+                    modalBio.textContent = bio;
+
+                    modal.style.display = "block";
+                    document.body.style.overflow = "hidden";
+                });
+            });
+
+            // মডাল বন্ধ করা
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = "none";
+                document.body.style.overflow = "auto";
+            });
+
+            // মডালের বাইরে ক্লিক করলে বন্ধ হবে
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                    document.body.style.overflow = "auto";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

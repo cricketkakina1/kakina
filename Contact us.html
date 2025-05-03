@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ক্রিকেট ক্লাব - যোগাযোগ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #e53935;
+            --accent-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kalpurush', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('8.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            background: rgba(26, 35, 126, 0.9);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .logo {
+            height: 80px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 5px rgba(255, 193, 7, 0.7));
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .contact-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            color: var(--dark-text);
+        }
+
+        .contact-image {
+            background: url('Final Logo.PNG') 
+            center/cover;
+            position: relative;
+        }
+
+        .contact-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.7), rgba(229, 57, 53, 0.7));
+        }
+
+        .contact-form-container {
+            padding: 2.5rem;
+        }
+
+        .contact-form h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .contact-form h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.4);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+
+        .social-links {
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-image {
+                display: none;
+            }
+
+            .contact-form-container {
+                padding: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-form-container {
+                padding: 1.5rem;
+            }
+
+            .contact-form h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="logo crid.PNG" alt="ক্রিকেট ক্লাব লোগো" class="logo">
+        <h1>ক্রিকেট ক্লাব</h1>
+        <p>আপনার প্রশ্ন ও পরামর্শ আমাদের কাছে গুরুত্বপূর্ণ</p>
+    </header>
+
+    <main class="main-container">
+        <div class="contact-container">
+            <div class="contact-image"></div>
+            <div class="contact-form-container">
+                <form class="contact-form" action="#" method="post">
+                    <h2>যোগাযোগ ফর্ম</h2>
+                    
+                    <div class="form-group">
+                        <label for="name">আপনার নাম</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="নাম লিখুন" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">ফোন নম্বর</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="ফোন নম্বর লিখুন" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">বিষয়</label>
+                        <select id="subject" name="subject" class="form-control" required>
+                            <option value="" disabled selected>বিষয় নির্বাচন করুন</option>
+                            <option value="membership">সদস্যতা সংক্রান্ত</option>
+                            <option value="training">প্রশিক্ষণ সম্পর্কিত</option>
+                            <option value="event">ইভেন্ট তথ্য</option>
+                            <option value="feedback">প্রতিক্রিয়া/পরামর্শ</option>
+                            <option value="other">অন্যান্য</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">আপনার বার্তা</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="আপনার বার্তা লিখুন..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> পাঠিয়ে দিন
+                    </button>
+                </form>
+
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>আমাদের ঠিকানা</h3>
+                            <p>ক্রিকেট স্টেডিয়াম রোড, ঢাকা-১২১৬</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>ফোন করুন</h3>
+                            <p>+৮৮০ ১৯১২৩৪৫৬৭৮</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h3>খোলার সময়</h3>
+                            <p>শনি-বৃহস্পতি: সকাল ৯টা - সন্ধ্যা ৬টা</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+</body>
+</html>
